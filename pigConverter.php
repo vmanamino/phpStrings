@@ -5,14 +5,14 @@
 </form>
 
 <?php
-
+$consonants = 'bBcCdDfFgGhHjJkKlLmMnNpPqQrRsStTvVwWxXyYzZ';
 # main function to return modified input
 function convertPig($input) {
 	#regex to match on initial consonants
-	if (preg_match("/^[^aeiouAEIOU]/", $input)) {
+	if (preg_match("/^[bBcCdDfFgGhHjJkKlLmMnNpPqQrRsStTvVwWxXyYzZ]/", $input)) {
 		$pig = initial_cons($input);	
 	#regex to match on initial vowel
-	} else if (preg_match("/^aeiouAEIOU/", $input)) {
+	} else if (preg_match("/^[aeiouAEIOU]/", $input)) {
 		$pig = initial_vowel($input);	
 		
 	}	
@@ -20,16 +20,14 @@ function convertPig($input) {
 	
 }
 
-#function to deal with initial consonants including cluster q
+#function to deal with initial consonants including clusters
 function initial_cons($input) {
-	if (preg_match("/^qu/", $input)) {
+	if (preg_match("/^[qQ]u/", $input)) {
 		$pig = substr($input,2);
 		$pig .= "quay";		
-	} else {
-		$pig = substr($input, 1);
-		$consonant = substr($input,0,1);
-		$pig .= $consonant;
-		$pig .= "ay";			
+	} else if (preg_match("/^([bBcCdDfFgGhHjJkKlLmMnNpPqQrRsStTvVwWxXyYzZ]+)(\w+)/", $input, $matches)) {
+		$pig = $matches[2].$matches[1]."ay";
+			
 	}
 	return $pig;	
 }
